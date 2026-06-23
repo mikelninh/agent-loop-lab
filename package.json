@@ -1,0 +1,21 @@
+{
+  "name": "agent-loop-lab",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "scan": "curl -s -X POST http://localhost:3000/scan"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "inngest": "^3.40.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^24.13.2",
+    "tsx": "^4.20.6",
+    "typescript": "~5.9.0"
+  }
+}
