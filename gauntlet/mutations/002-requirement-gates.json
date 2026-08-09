@@ -1,0 +1,6 @@
+{
+  "id": "hard-requirement-gates",
+  "hypothesis": "Explicit credential and role-family mismatches should cap fit before technology keyword overlap can inflate the verdict.",
+  "kind": "requirement_gates",
+  "value": true
+}
