@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "description": "Frozen benchmark for Job Radar. Do not edit after looking at experiment results; add new cases in a new benchmark version.",
+  "tasks": [
+    {
+      "id": "strong-rag-govtech",
+      "posting": {
+        "id": "g1",
+        "title": "AI Engineer — RAG & Agents",
+        "company": "Civic Systems",
+        "location": "Berlin",
+        "description": "Build RAG systems, MCP tools and agentic workflows with Python, FastAPI, embeddings and React for public-sector products.",
+        "url": "https://example.test/g1"
+      },
+      "expectedVerdict": "starker Fit",
+      "requiredEvidence": ["RAG / Retrieval", "MCP-Integration", "FastAPI / Python-APIs", "Agenten / Workflow-Automation"]
+    },
+    {
+      "id": "strong-agent-platform",
+      "posting": {
+        "id": "g2",
+        "title": "Agentic AI Engineer",
+        "company": "Flow Lab",
+        "location": "Berlin / remote",
+        "description": "Own LLM agent workflows, MCP integrations, Python APIs, evaluation harnesses and production automation. React experience is useful.",
+        "url": "https://example.test/g2"
+      },
+      "expectedVerdict": "starker Fit",
+      "requiredEvidence": ["MCP-Integration", "FastAPI / Python-APIs", "Agenten / Workflow-Automation", "LLM / Generative AI"]
+    },
+    {
+      "id": "good-document-ai",
+      "posting": {
+        "id": "g3",
+        "title": "Document AI Engineer",
+        "company": "Paperless GmbH",
+        "location": "Berlin",
+        "description": "Document processing, OCR, Python APIs and LLM extraction pipelines. Hybrid role in Berlin.",
+        "url": "https://example.test/g3"
+      },
+      "expectedVerdict": "guter Fit",
+      "requiredEvidence": ["Document AI", "FastAPI / Python-APIs", "LLM / Generative AI"]
+    },
+    {
+      "id": "good-ai-consulting",
+      "posting": {
+        "id": "g4",
+        "title": "Consultant Generative AI",
+        "company": "Digital Beratung",
+        "location": "Berlin",
+        "description": "Design AI-agent use cases, advise public-sector clients and prototype with Python and generative AI.",
+        "url": "https://example.test/g4"
+      },
+      "expectedVerdict": "guter Fit",
+      "requiredEvidence": ["Agenten / Workflow-Automation", "LLM / Generative AI", "GovTech / öffentlicher Sektor"]
+    },
+    {
+      "id": "good-ai-frontend",
+      "posting": {
+        "id": "g5",
+        "title": "AI Product Engineer",
+        "company": "Studio AI",
+        "location": "remote",
+        "description": "Build React and TypeScript interfaces around LLM APIs and lightweight Python services.",
+        "url": "https://example.test/g5"
+      },
+      "expectedVerdict": "guter Fit",
+      "requiredEvidence": ["Frontend / React", "LLM / Generative AI", "FastAPI / Python-APIs"]
+    },
+    {
+      "id": "weak-java",
+      "posting": {
+        "id": "g6",
+        "title": "Senior Java Backend Engineer",
+        "company": "Legacy AG",
+        "location": "München",
+        "description": "Java, Spring Boot and Oracle maintenance for mature enterprise systems. No AI work.",
+        "url": "https://example.test/g6"
+      },
+      "expectedVerdict": "schwacher Fit",
+      "requiredEvidence": []
+    },
+    {
+      "id": "weak-marketing",
+      "posting": {
+        "id": "g7",
+        "title": "Brand Marketing Manager",
+        "company": "Brand Co",
+        "location": "Hamburg",
+        "description": "Campaign planning, social media, creator partnerships and brand strategy.",
+        "url": "https://example.test/g7"
+      },
+      "expectedVerdict": "schwacher Fit",
+      "requiredEvidence": []
+    },
+    {
+      "id": "trap-ai-sales",
+      "posting": {
+        "id": "g8",
+        "title": "Enterprise Account Executive — AI Platform",
+        "company": "Quota AI",
+        "location": "Berlin",
+        "description": "Sell an LLM, RAG and agent platform to enterprise customers. Own quota, pipeline generation, negotiation and closing. Product uses Python, MCP and FastAPI.",
+        "url": "https://example.test/g8"
+      },
+      "expectedVerdict": "schwacher Fit",
+      "requiredEvidence": []
+    },
+    {
+      "id": "trap-research-phd",
+      "posting": {
+        "id": "g9",
+        "title": "Senior Research Scientist — Foundation Models",
+        "company": "Frontier Lab",
+        "location": "Berlin",
+        "description": "PhD required. Publish original LLM research, train models at scale and lead a research agenda. Python and embeddings required.",
+        "url": "https://example.test/g9"
+      },
+      "expectedVerdict": "schwacher Fit",
+      "requiredEvidence": []
+    },
+    {
+      "id": "trap-ml-infra",
+      "posting": {
+        "id": "g10",
+        "title": "Senior GPU Infrastructure Engineer",
+        "company": "Compute Works",
+        "location": "remote",
+        "description": "Operate Kubernetes clusters, CUDA fleets, distributed training infrastructure and low-level Linux networking. Python scripting helpful.",
+        "url": "https://example.test/g10"
+      },
+      "expectedVerdict": "schwacher Fit",
+      "requiredEvidence": []
+    },
+    {
+      "id": "strong-civic-mcp",
+      "posting": {
+        "id": "g11",
+        "title": "AI Engineer — Digital Government",
+        "company": "Public Digital",
+        "location": "Berlin",
+        "description": "Build MCP tools, RAG search, FastAPI services and agent workflows for German administration. React frontend ownership welcome.",
+        "url": "https://example.test/g11"
+      },
+      "expectedVerdict": "starker Fit",
+      "requiredEvidence": ["MCP-Integration", "RAG / Retrieval", "FastAPI / Python-APIs", "GovTech / öffentlicher Sektor"]
+    },
+    {
+      "id": "good-workflow-ops",
+      "posting": {
+        "id": "g12",
+        "title": "AI Operations Associate",
+        "company": "Agent Company",
+        "location": "Berlin",
+        "description": "Operate multi-step agentic workflows, improve prompts, evaluate structured outputs and automate internal processes with LLM tools.",
+        "url": "https://example.test/g12"
+      },
+      "expectedVerdict": "guter Fit",
+      "requiredEvidence": ["Agenten / Workflow-Automation", "LLM / Generative AI"]
+    }
+  ]
+}
