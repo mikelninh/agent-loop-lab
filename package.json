@@ -8,7 +8,8 @@
     "start": "tsx src/server.ts",
     "scan": "curl -s -X POST http://localhost:3000/scan",
     "gauntlet": "tsx src/gauntlet.ts",
-    "gauntlet:example": "tsx src/gauntlet.ts --mutation gauntlet/mutations/example.json"
+    "gauntlet:example": "tsx src/gauntlet.ts --mutation gauntlet/mutations/example.json",
+    "gauntlet:requirements": "tsx src/gauntlet.ts --mutation gauntlet/mutations/002-requirement-gates.json"
   },
   "dependencies": {
     "express": "^4.21.2",
