@@ -15,6 +15,38 @@ export type FitPolicy = {
   goodThreshold?: number
   strongThreshold?: number
   capabilityWeightOverrides?: Record<string, number>
+  requirementGates?: boolean
+}
+
+type RequirementMismatch = {
+  kind: 'unsupported-credential' | 'different-role-family'
+  reason: string
+}
+
+function detectRequirementMismatch(posting: Posting): RequirementMismatch | undefined {
+  const title = posting.title.toLowerCase()
+  const text = `${posting.title} ${posting.description}`.toLowerCase()
+
+  // A required credential is a gate, not another keyword to average away.
+  if (/\bph\.?d\.? required\b|\bdoctorate required\b/.test(text)) {
+    return {
+      kind: 'unsupported-credential',
+      reason: 'Role explicitly requires a doctorate that is not represented in the capability profile.',
+    }
+  }
+
+  // Technology names inside a quota-carrying sales role describe the product being
+  // sold, not the work the candidate is being hired to perform.
+  const salesTitle = /account executive|sales executive|enterprise sales|business development/.test(title)
+  const quotaWork = /\bquota\b|pipeline generation|\bclosing\b|close deals|sales pipeline/.test(text)
+  if (salesTitle && quotaWork) {
+    return {
+      kind: 'different-role-family',
+      reason: 'Quota-carrying sales is a different role family from the engineering/AI-operations evidence profile.',
+    }
+  }
+
+  return undefined
 }
 
 // Der „Decision-Maker" in der Mitte des Loops. Default bleibt deterministisch
@@ -33,7 +65,9 @@ export function assessFit(posting: Posting, policy: FitPolicy = {}): FitResult {
     0,
   )
   const scoreBasis = policy.scoreBasis ?? SCORE_BASIS
-  const score = Math.min(weight / scoreBasis, 1)
+  const rawScore = Math.min(weight / scoreBasis, 1)
+  const mismatch = policy.requirementGates ? detectRequirementMismatch(posting) : undefined
+  const score = mismatch ? Math.min(rawScore, 0.3) : rawScore
   const strongThreshold = policy.strongThreshold ?? 0.8
   const goodThreshold = policy.goodThreshold ?? 0.5
   const verdict =
