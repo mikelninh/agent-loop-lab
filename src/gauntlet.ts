@@ -61,7 +61,8 @@ function judgeNote(note: string): number | undefined {
   if (process.env.GAUNTLET_USE_JUDGE !== '1') return undefined
 
   const bin = process.env.JUDGE_ARTIFACT_BIN || 'judge-artifact'
-  const result = spawnSync(bin, ['--rubric', 'application-note'], {
+  const rubricFile = process.env.JUDGE_RUBRIC_FILE || 'gauntlet/application-note-rubric.json'
+  const result = spawnSync(bin, ['--rubric-file', rubricFile], {
     input: note,
     encoding: 'utf8',
     env: process.env,
