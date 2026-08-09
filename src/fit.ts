@@ -10,20 +10,34 @@ export type FitResult = {
   matched: string[]
 }
 
-// Der „Decision-Maker" in der Mitte des Loops. Heute deterministisch
-// (Keyword-Match gegen Mikels Capabilities) — damit der Fit messbar UND
-// belegbar ist. Ein echtes LLM lässt sich hier 1:1 einsetzen; der Rest
-// der Architektur (Loop, Skill, Orchestrator) bleibt unverändert.
-export function assessFit(posting: Posting): FitResult {
+export type FitPolicy = {
+  scoreBasis?: number
+  goodThreshold?: number
+  strongThreshold?: number
+  capabilityWeightOverrides?: Record<string, number>
+}
+
+// Der „Decision-Maker" in der Mitte des Loops. Default bleibt deterministisch
+// und identisch zum bisherigen Verhalten. Der optionale FitPolicy-Parameter ist
+// absichtlich klein: Gauntlet-Experimente können genau EINE Hypothese verändern,
+// ohne die Produktionslogik oder den Benchmark umzuschreiben.
+export function assessFit(posting: Posting, policy: FitPolicy = {}): FitResult {
   const text = `${posting.title} ${posting.description}`.toLowerCase()
 
   const hits: Capability[] = capabilities.filter((c) =>
     c.keywords.some((kw) => text.includes(kw)),
   )
 
-  const weight = hits.reduce((sum, c) => sum + c.weight, 0)
-  const score = Math.min(weight / SCORE_BASIS, 1)
-  const verdict = score >= 0.8 ? 'starker Fit' : score >= 0.5 ? 'guter Fit' : 'schwacher Fit'
+  const weight = hits.reduce(
+    (sum, c) => sum + (policy.capabilityWeightOverrides?.[c.need] ?? c.weight),
+    0,
+  )
+  const scoreBasis = policy.scoreBasis ?? SCORE_BASIS
+  const score = Math.min(weight / scoreBasis, 1)
+  const strongThreshold = policy.strongThreshold ?? 0.8
+  const goodThreshold = policy.goodThreshold ?? 0.5
+  const verdict =
+    score >= strongThreshold ? 'starker Fit' : score >= goodThreshold ? 'guter Fit' : 'schwacher Fit'
 
   return {
     score: Math.round(score * 100) / 100,
