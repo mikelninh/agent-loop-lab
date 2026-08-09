@@ -10,20 +10,68 @@ export type FitResult = {
   matched: string[]
 }
 
-// Der „Decision-Maker" in der Mitte des Loops. Heute deterministisch
-// (Keyword-Match gegen Mikels Capabilities) — damit der Fit messbar UND
-// belegbar ist. Ein echtes LLM lässt sich hier 1:1 einsetzen; der Rest
-// der Architektur (Loop, Skill, Orchestrator) bleibt unverändert.
-export function assessFit(posting: Posting): FitResult {
+export type FitPolicy = {
+  scoreBasis?: number
+  goodThreshold?: number
+  strongThreshold?: number
+  capabilityWeightOverrides?: Record<string, number>
+  requirementGates?: boolean
+}
+
+type RequirementMismatch = {
+  kind: 'unsupported-credential' | 'different-role-family'
+  reason: string
+}
+
+function detectRequirementMismatch(posting: Posting): RequirementMismatch | undefined {
+  const title = posting.title.toLowerCase()
+  const text = `${posting.title} ${posting.description}`.toLowerCase()
+
+  // A required credential is a gate, not another keyword to average away.
+  if (/\bph\.?d\.? required\b|\bdoctorate required\b/.test(text)) {
+    return {
+      kind: 'unsupported-credential',
+      reason: 'Role explicitly requires a doctorate that is not represented in the capability profile.',
+    }
+  }
+
+  // Technology names inside a quota-carrying sales role describe the product being
+  // sold, not the work the candidate is being hired to perform.
+  const salesTitle = /account executive|sales executive|enterprise sales|business development/.test(title)
+  const quotaWork = /\bquota\b|pipeline generation|\bclosing\b|close deals|sales pipeline/.test(text)
+  if (salesTitle && quotaWork) {
+    return {
+      kind: 'different-role-family',
+      reason: 'Quota-carrying sales is a different role family from the engineering/AI-operations evidence profile.',
+    }
+  }
+
+  return undefined
+}
+
+// Der „Decision-Maker" in der Mitte des Loops. Requirement gates sind der
+// aktuelle Gauntlet-Champion. policy.requirementGates=false bleibt als saubere
+// Ablation erhalten; andere Policy-Felder erlauben weiterhin genau abgegrenzte Experimente.
+export function assessFit(posting: Posting, policy: FitPolicy = {}): FitResult {
   const text = `${posting.title} ${posting.description}`.toLowerCase()
 
   const hits: Capability[] = capabilities.filter((c) =>
     c.keywords.some((kw) => text.includes(kw)),
   )
 
-  const weight = hits.reduce((sum, c) => sum + c.weight, 0)
-  const score = Math.min(weight / SCORE_BASIS, 1)
-  const verdict = score >= 0.8 ? 'starker Fit' : score >= 0.5 ? 'guter Fit' : 'schwacher Fit'
+  const weight = hits.reduce(
+    (sum, c) => sum + (policy.capabilityWeightOverrides?.[c.need] ?? c.weight),
+    0,
+  )
+  const scoreBasis = policy.scoreBasis ?? SCORE_BASIS
+  const rawScore = Math.min(weight / scoreBasis, 1)
+  const requirementGatesEnabled = policy.requirementGates ?? true
+  const mismatch = requirementGatesEnabled ? detectRequirementMismatch(posting) : undefined
+  const score = mismatch ? Math.min(rawScore, 0.3) : rawScore
+  const strongThreshold = policy.strongThreshold ?? 0.8
+  const goodThreshold = policy.goodThreshold ?? 0.5
+  const verdict =
+    score >= strongThreshold ? 'starker Fit' : score >= goodThreshold ? 'guter Fit' : 'schwacher Fit'
 
   return {
     score: Math.round(score * 100) / 100,

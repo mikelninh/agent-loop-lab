@@ -1,0 +1,7 @@
+{
+  "id": "raise-good-threshold",
+  "hypothesis": "A slightly higher good-fit threshold reduces false positives from superficial AI keyword overlap.",
+  "kind": "threshold",
+  "target": "good",
+  "value": 0.6
+}

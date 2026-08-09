@@ -1,0 +1,41 @@
+{
+  "rubric": {
+    "name": "Job application note quality",
+    "criteria": [
+      {
+        "id": "evidence",
+        "name": "Evidence-grounded fit",
+        "weight": 3,
+        "guide": "Every capability claim is tied to concrete project evidence; no unsupported strengths are invented."
+      },
+      {
+        "id": "role_relevance",
+        "name": "Role relevance",
+        "weight": 3,
+        "guide": "The note focuses on the requirements that actually define this role rather than generic AI keywords."
+      },
+      {
+        "id": "specificity",
+        "name": "Specificity",
+        "weight": 2,
+        "guide": "Names concrete projects, technologies, outcomes or responsibilities instead of vague enthusiasm."
+      },
+      {
+        "id": "brevity",
+        "name": "Brevity",
+        "weight": 1,
+        "guide": "Readable quickly; no filler, repetition or inflated marketing language."
+      },
+      {
+        "id": "honesty",
+        "name": "Honest positioning",
+        "weight": 2,
+        "guide": "Does not imply seniority, credentials or experience not demonstrated by the supplied evidence."
+      }
+    ],
+    "anchors": {
+      "high": "Short note naming the role's core needs, two proven matching projects, one honest gap and a simple next step.",
+      "low": "Generic AI enthusiasm, keyword stuffing, inflated seniority and claims with no project evidence."
+    }
+  }
+}
