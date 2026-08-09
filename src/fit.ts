@@ -49,10 +49,9 @@ function detectRequirementMismatch(posting: Posting): RequirementMismatch | unde
   return undefined
 }
 
-// Der „Decision-Maker" in der Mitte des Loops. Default bleibt deterministisch
-// und identisch zum bisherigen Verhalten. Der optionale FitPolicy-Parameter ist
-// absichtlich klein: Gauntlet-Experimente können genau EINE Hypothese verändern,
-// ohne die Produktionslogik oder den Benchmark umzuschreiben.
+// Der „Decision-Maker" in der Mitte des Loops. Requirement gates sind der
+// aktuelle Gauntlet-Champion. policy.requirementGates=false bleibt als saubere
+// Ablation erhalten; andere Policy-Felder erlauben weiterhin genau abgegrenzte Experimente.
 export function assessFit(posting: Posting, policy: FitPolicy = {}): FitResult {
   const text = `${posting.title} ${posting.description}`.toLowerCase()
 
@@ -66,7 +65,8 @@ export function assessFit(posting: Posting, policy: FitPolicy = {}): FitResult {
   )
   const scoreBasis = policy.scoreBasis ?? SCORE_BASIS
   const rawScore = Math.min(weight / scoreBasis, 1)
-  const mismatch = policy.requirementGates ? detectRequirementMismatch(posting) : undefined
+  const requirementGatesEnabled = policy.requirementGates ?? true
+  const mismatch = requirementGatesEnabled ? detectRequirementMismatch(posting) : undefined
   const score = mismatch ? Math.min(rawScore, 0.3) : rawScore
   const strongThreshold = policy.strongThreshold ?? 0.8
   const goodThreshold = policy.goodThreshold ?? 0.5
