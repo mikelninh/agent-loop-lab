@@ -23,6 +23,7 @@ type Mutation =
   | { id: string; hypothesis: string; kind: 'score_basis'; value: number }
   | { id: string; hypothesis: string; kind: 'threshold'; target: 'good' | 'strong'; value: number }
   | { id: string; hypothesis: string; kind: 'capability_weight'; capability: string; value: number }
+  | { id: string; hypothesis: string; kind: 'requirement_gates'; value: boolean }
 
 type Row = {
   id: string
@@ -54,6 +55,7 @@ function policyFromMutation(mutation?: Mutation): FitPolicy {
       ? { goodThreshold: mutation.value }
       : { strongThreshold: mutation.value }
   }
+  if (mutation.kind === 'requirement_gates') return { requirementGates: mutation.value }
   return { capabilityWeightOverrides: { [mutation.capability]: mutation.value } }
 }
 
