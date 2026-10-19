@@ -1,3 +1,6 @@
 node_modules/
 data/
 *.log
+
+# Trail-code structural graph: regenerable machine-local cache
+graft/
