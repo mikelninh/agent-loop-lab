@@ -1,0 +1,24 @@
+name: OpenBot Repo Scout pilot
+
+on:
+  pull_request:
+    paths:
+      - 'tools/openbot-pilot/**'
+      - 'tests/openbot-pilot.test.mjs'
+      - '.github/workflows/openbot-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-protocol-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify read-only AG-UI pilot without secrets or dependencies
+        run: node --test tests/openbot-pilot.test.mjs
